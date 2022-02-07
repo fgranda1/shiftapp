@@ -1,0 +1,96 @@
+{% extends "main/layout.html" %}
+{% block body %}
+    <div class="container">
+        <div class="row py-4">
+            <div class="col-12 col-lg-6">
+                <div class="show"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        fetch('../api/get_shift').then(response =>{
+            if (response.status != 200) {
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+              }
+            response.json().then(data =>{               
+               
+               for (let i = 0; i < data.length; i++){
+                   console.log(data[i]);     
+                   
+                   const div = document.createElement('div');
+                   const h3 = document.createElement('h3');
+                   const table = document.createElement('table')
+                   const tbody = document.createElement('tbody')
+                   const thead = document.createElement('thead')
+
+                   thead.innerHTML = `
+                    <tr>
+                        <th>From</th>    
+                        <th>To</th>    
+                    </tr>
+                   `
+
+                   table.classList.add('table');
+                   
+                   
+
+
+                   h3.innerHTML = `
+                    <h3>${data[i]['date']}</h3> `
+                   div.append(h3)
+                   
+                   
+
+                
+
+                    
+
+                    for (let e = 0; e < data[i]['activity'].length; e++) {
+                        
+                        const tr = document.createElement('tr')
+                        const td = document.createElement('td');   
+                        const td1 = document.createElement('td');  
+                                              
+                        
+                        tdInFrom = data[i]['activity'][e]['sch_from']
+                        tdInTo = data[i]['activity'][e]['sch_to']
+                        td.append(tdInFrom)
+                        td1.append(tdInTo)                 
+                        tr.append(td); 
+                        tr.append(td1); 
+                        tbody.append(tr);                        
+                    }
+                    table.append(thead);
+                    table.append(tbody);
+                    
+
+
+                    
+                    div.append(table);
+
+                    
+
+                    
+
+
+
+                   
+                   document.querySelector('.show').append(div)
+
+               }
+                      
+                  
+
+            })
+
+        })
+        
+        // document.querySelector('.show').innerHTML = `
+
+
+        
+        // `
+    </script>
+{% endblock %}
